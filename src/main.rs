@@ -1,28 +1,23 @@
-// struct is called structure custome data type
-
-// impl is called implementation block followed by same name of structure
-
-struct Employee{
-    emp_id: u16,
-    emp_name: String
-}
-impl Employee {
-    fn show_details(&self) {
-        println!("Employee id is {}", self.emp_id);
-        println!("Employee name is {}", self.emp_name);
-    }
-    fn mut_show_employee_name(&mut self, new_name:String){
-        self.emp_name = new_name;
-        println!("Employee new name is {}", self.emp_name );
-    }
-    fn create_employee(id: u16, name: String) -> Employee{
-        Employee { emp_id: id, emp_name: name }
-    }
-}
 fn main() {
-    let em1 = Employee{emp_id:1, emp_name: "amole".to_string()};
-    println!("{:?}", em1.show_details());
-    let employee = Employee::create_employee(22, "ayesha".to_string());
-    employee.show_details();
+    use std::fs;
 
+    let data = fs::read_to_string("/home/rana/name.txt").expect("Unable to read the file");
+
+    let result = data.split("\n").map(|i| i.trim()).collect::<Vec<&str>>();
+    // println!("Result {:?}", result);
+    let mut ans: Vec<String> = vec![];
+    for i in 0..result.len() {
+
+        if result[i].contains(",") {
+            let pair = result[i]
+                .split(",")
+                .map(|l| l.trim())
+                .collect::<Vec<&str>>();
+                ans.push(pair[0].to_owned());
+                ans.push(pair[1].to_owned());
+        }else if result[i].len() >= 1{
+            ans.push(result[i].to_string());
+        }
+    }
+    println!("{ans:?}");
 }
